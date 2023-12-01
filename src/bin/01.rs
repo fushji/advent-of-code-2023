@@ -1,7 +1,9 @@
+use std::vec;
+
 advent_of_code::solution!(1);
 
 pub fn part_one(input: &str) -> Option<u32> {
-    let lines = input.split("\n").collect::<Vec<&str>>();
+    let lines = input.split('\n').collect::<Vec<&str>>();
     let mut sum_calibration = 0;
 
     for line in lines {
@@ -9,10 +11,10 @@ pub fn part_one(input: &str) -> Option<u32> {
             continue;
         }
         let mut first = false;
-        let mut calibration: Vec<String> = vec!["".to_string(), "".to_string()];
+        let mut calibration: Vec<String> = vec!["0".to_string(), "0".to_string()];
         for c in line.chars() {
             if c.is_numeric() {
-                if first == false {
+                if !first {
                     first = true;
                     calibration[0] = c.to_string();
                 }
@@ -22,10 +24,10 @@ pub fn part_one(input: &str) -> Option<u32> {
         let calibration_num: String = calibration.join("");
 
         let calib: i32 = calibration_num.parse().unwrap();
-        sum_calibration = sum_calibration + calib;
+        sum_calibration += calib;
     }
 
-    return Some(sum_calibration as u32);
+    Some(sum_calibration as u32)
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
@@ -33,7 +35,7 @@ pub fn part_two(input: &str) -> Option<u32> {
         "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
     ];
 
-    let lines = input.split("\n").collect::<Vec<&str>>();
+    let lines = input.split('\n').collect::<Vec<&str>>();
     let mut sum_calibration = 0;
 
     for line in lines {
@@ -41,10 +43,10 @@ pub fn part_two(input: &str) -> Option<u32> {
             continue;
         }
         let mut first = false;
-        let mut calibration: Vec<String> = vec!["".to_string(), "".to_string()];
+        let mut calibration: Vec<String> = vec!["0".to_string(), "0".to_string()];
         for (i, c) in line.chars().enumerate() {
             if c.is_numeric() {
-                if first == false {
+                if !first {
                     first = true;
                     calibration[0] = c.to_string();
                 }
@@ -53,7 +55,7 @@ pub fn part_two(input: &str) -> Option<u32> {
 
             for (x, elem) in NUM.iter().enumerate() {
                 if line[i..].starts_with(elem) {
-                    if first == false {
+                    if !first {
                         first = true;
                         calibration[0] = (x + 1).to_string();
                     }
@@ -64,10 +66,10 @@ pub fn part_two(input: &str) -> Option<u32> {
         let calibration_num: String = calibration.join("");
 
         let calib: i32 = calibration_num.parse().unwrap();
-        sum_calibration = sum_calibration + calib;
+        sum_calibration += calib;
     }
 
-    return Some(sum_calibration as u32);
+    Some(sum_calibration as u32)
 }
 
 #[cfg(test)]
