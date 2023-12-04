@@ -1,9 +1,11 @@
+use std::collections::HashSet;
+
 advent_of_code::solution!(3);
 
 pub fn part_one(input: &str) -> Option<u32> {
     let grid = input.split('\n').collect::<Vec<&str>>();
 
-    let mut coordinates: Vec<[usize; 2]> = Vec::new();
+    let mut coordinates: HashSet<[usize; 2]> = HashSet::new();
 
     for (r, line) in grid.iter().enumerate() {
         for (c, ch) in line.chars().enumerate() {
@@ -23,16 +25,8 @@ pub fn part_one(input: &str) -> Option<u32> {
                     while k > 0 && grid[i].chars().nth(k - 1).unwrap().is_numeric() {
                         k -= 1;
                     }
-                    let mut exists = false;
-                    for point in coordinates.iter() {
-                        if point[0] == i && point[1] == k {
-                            exists = true;
-                        }
-                    }
 
-                    if !exists {
-                        coordinates.push([i, k]);
-                    }
+                    coordinates.insert([i, k]);
                 }
             }
         }
@@ -64,7 +58,7 @@ pub fn part_two(input: &str) -> Option<u32> {
                 continue;
             }
 
-            let mut coordinates: Vec<[usize; 2]> = Vec::new();
+            let mut coordinates: HashSet<[usize; 2]> = HashSet::new();
 
             for i in r - 1..r + 2 {
                 for j in c - 1..c + 2 {
@@ -78,16 +72,8 @@ pub fn part_two(input: &str) -> Option<u32> {
                     while k > 0 && grid[i].chars().nth(k - 1).unwrap().is_numeric() {
                         k -= 1;
                     }
-                    let mut exists = false;
-                    for point in coordinates.iter() {
-                        if point[0] == i && point[1] == k {
-                            exists = true;
-                        }
-                    }
 
-                    if !exists {
-                        coordinates.push([i, k]);
-                    }
+                    coordinates.insert([i, k]);
                 }
             }
 
