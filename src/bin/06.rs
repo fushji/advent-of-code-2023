@@ -48,8 +48,8 @@ pub fn part_two(input: &str) -> Option<u32> {
         .parse::<f64>()
         .unwrap();
 
-    let min = (time as f64 - (((time * time) - 4.0 * distance) as f64).sqrt()) / 2.0;
-    let max = (time as f64 + (((time * time) - 4.0 * distance) as f64).sqrt()) / 2.0;
+    let min = (time - (time.powf(2.0) - 4.0 * distance).sqrt()) / 2.0;
+    let max = (time + (time.powf(2.0) - 4.0 * distance).sqrt()) / 2.0;
 
     Some((max - min + 1.0) as u32)
 }
