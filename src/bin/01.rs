@@ -3,10 +3,9 @@ use std::vec;
 advent_of_code::solution!(1);
 
 pub fn part_one(input: &str) -> Option<u32> {
-    let lines = input.split('\n').collect::<Vec<&str>>();
     let mut sum_calibration = 0;
 
-    for line in lines {
+    for line in input.lines() {
         if line.is_empty() {
             continue;
         }
@@ -35,10 +34,9 @@ pub fn part_two(input: &str) -> Option<u32> {
         "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
     ];
 
-    let lines = input.split('\n').collect::<Vec<&str>>();
     let mut sum_calibration = 0;
 
-    for line in lines {
+    for line in input.lines() {
         if line.is_empty() {
             continue;
         }
