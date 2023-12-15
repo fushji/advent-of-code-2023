@@ -42,7 +42,7 @@ pub fn part_one(input: &str) -> Option<i64> {
         }
     }
 
-    Some(lowest_location as i64)
+    Some(lowest_location)
 }
 
 pub fn part_two(input: &str) -> Option<i64> {
