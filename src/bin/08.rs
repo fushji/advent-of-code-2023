@@ -80,7 +80,7 @@ pub fn part_two(input: &str) -> Option<usize> {
 
     let start_nodes: Vec<_> = network.iter().filter(|x| x.0.ends_with('A')).collect();
 
-    let mut to_end_counts = HashMap::<&str, usize>::new();
+    let mut end_counts = HashMap::<&str, usize>::new();
 
     for start in start_nodes.iter() {
         let mut current_node_name = *start.0;
@@ -88,10 +88,10 @@ pub fn part_two(input: &str) -> Option<usize> {
         let mut commands_list = commands.chars().cycle();
 
         while !current_node_name.ends_with('Z') {
-            let current_instruction = commands_list.next().unwrap();
+            let command = commands_list.next().unwrap();
             let current_node = network.get(current_node_name).unwrap();
 
-            let next_node_name = match current_instruction {
+            let next_node_name = match command {
                 'L' => current_node.0,
                 'R' => current_node.1,
                 _ => unreachable!(),
@@ -101,10 +101,10 @@ pub fn part_two(input: &str) -> Option<usize> {
             count += 1;
         }
 
-        to_end_counts.insert(start.0, count);
+        end_counts.insert(start.0, count);
     }
 
-    let counts = to_end_counts.values().cloned().collect::<Vec<_>>();
+    let counts = end_counts.values().cloned().collect::<Vec<_>>();
 
     let lcm = lcm(&counts);
 
