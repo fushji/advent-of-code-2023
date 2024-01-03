@@ -13,7 +13,7 @@ pub fn build_galaxies(input: &str) -> Vec<(usize, usize)> {
     galaxies
 }
 
-fn extract_empty_rows(mut galaxies: Vec<(usize, usize)>) -> Vec<usize> {
+pub fn extract_empty_rows(galaxies: &mut Vec<(usize, usize)>) -> Vec<usize> {
     let mut empty_rows: Vec<usize> = Vec::new();
 
     galaxies.sort_by(|a, b| a.0.cmp(&b.0));
@@ -29,7 +29,7 @@ fn extract_empty_rows(mut galaxies: Vec<(usize, usize)>) -> Vec<usize> {
     empty_rows
 }
 
-fn extract_empty_cols(mut galaxies: Vec<(usize, usize)>) -> Vec<usize> {
+pub fn extract_empty_cols(galaxies: &mut Vec<(usize, usize)>) -> Vec<usize> {
     let mut empty_cols: Vec<usize> = Vec::new();
 
     galaxies.sort_by(|a, b| a.1.cmp(&b.1));
@@ -45,59 +45,47 @@ fn extract_empty_cols(mut galaxies: Vec<(usize, usize)>) -> Vec<usize> {
     empty_cols
 }
 
-fn expand_galaxies(
+pub fn expand_galaxies(
     galaxies: &mut [(usize, usize)],
     empty_rows: &[usize],
     empty_cols: &[usize],
-    rate: i32,
+    rate: usize,
 ) {
     for galaxy in galaxies {
-        let num_step_x = empty_rows.iter().filter(|r| **r < galaxy.0).count() as i32;
-        let num_step_y = empty_cols.iter().filter(|c| **c < galaxy.1).count() as i32;
+        let num_step_x = empty_rows.iter().filter(|r| **r < galaxy.0).count() as usize;
+        let num_step_y = empty_cols.iter().filter(|c| **c < galaxy.1).count() as usize;
 
         galaxy.0 += (num_step_x * (rate - 1)) as usize;
         galaxy.1 += (num_step_y * (rate - 1)) as usize;
     }
 }
 
-pub fn part_one(input: &str) -> Option<u32> {
+pub fn solve(input: &str, rate: usize) -> usize {
     let mut galaxies: Vec<(usize, usize)> = build_galaxies(input);
-    let empty_rows: Vec<usize> = extract_empty_rows(galaxies.clone());
-    let empty_cols: Vec<usize> = extract_empty_cols(galaxies.clone());
+    let empty_rows: Vec<usize> = extract_empty_rows(&mut galaxies);
+    let empty_cols: Vec<usize> = extract_empty_cols(&mut galaxies);
 
-    expand_galaxies(&mut galaxies, &empty_rows, &empty_cols, 2);
+    expand_galaxies(&mut galaxies, &empty_rows, &empty_cols, rate);
 
-    let mut distances_sum: u32 = 0;
+    let mut distances_sum: usize = 0;
     for i in 0..galaxies.len() {
         for j in i + 1..galaxies.len() {
             let distance = (galaxies[i].0 as i32 - galaxies[j].0 as i32).abs()
                 + (galaxies[i].1 as i32 - galaxies[j].1 as i32).abs();
 
-            distances_sum += distance as u32;
+            distances_sum += distance as usize;
         }
     }
 
-    Some(distances_sum)
+    distances_sum
+}
+
+pub fn part_one(input: &str) -> Option<u32> {
+    Some(solve(input, 2) as u32)
 }
 
 pub fn part_two(input: &str) -> Option<u64> {
-    let mut galaxies: Vec<(usize, usize)> = build_galaxies(input);
-    let empty_rows: Vec<usize> = extract_empty_rows(galaxies.clone());
-    let empty_cols: Vec<usize> = extract_empty_cols(galaxies.clone());
-
-    expand_galaxies(&mut galaxies, &empty_rows, &empty_cols, 1_000_000);
-
-    let mut distances_sum: u64 = 0;
-    for i in 0..galaxies.len() {
-        for j in i + 1..galaxies.len() {
-            let distance = (galaxies[i].0 as i32 - galaxies[j].0 as i32).abs()
-                + (galaxies[i].1 as i32 - galaxies[j].1 as i32).abs();
-
-            distances_sum += distance as u64;
-        }
-    }
-
-    Some(distances_sum)
+    Some(solve(input, 1_000_000) as u64)
 }
 
 #[cfg(test)]
